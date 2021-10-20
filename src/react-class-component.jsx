@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ReactDom from 'react-dom';
+import style from './style.css';
 
 /**
  * 文字列をJSONに変換を試行し、失敗 or 戻り値が nullable なら elseObj を返却
@@ -17,23 +18,46 @@ const jsonParseOrElse = (mayBeJsonStr, elseObj) => {
 
 class TicTacToe extends Component {
 
-    static X = Symbol("x");
-    static O = Symbol("o");
+    static X = "x";
+    static O = "o";
     static DefaultStore = Array(9).fill(null);
 
     constructor(props) {
         super(props);
-        const store = jsonParseOrElse(localStorage.getItem("tic-tac-toe"), TicTacToe.DefaultStore)
-            .map(key => {
-                if (key === 'x') return TicTacToe.X;
-                if (key === 'o') return TicTacToe.O;
-                return null;
-            });
-        this.state = {store};
+        this.state = {
+            store: TicTacToe.DefaultStore
+        };
     }
 
-    mapper = () => this.state
-        .store
+    componentDidMount = () => {
+        // 非同期の例
+        setTimeout(() => {
+            const store = jsonParseOrElse(localStorage.getItem("tic-tac-toe"), TicTacToe.DefaultStore)
+                .map(key => {
+                    if (key === 'x') return TicTacToe.X;
+                    if (key === 'o') return TicTacToe.O;
+                    return null;
+                });
+            this.setState({store});
+        }, 1000);
+    }
+
+    put = ({target}) => {
+        const store = [...this.state.store];
+        store[target.dataset.index] = TicTacToe.X;
+        this.setState(
+            {store},
+            () => localStorage.setItem("tic-tac-toe", JSON.stringify(this.state.store))
+        );
+    }
+
+    display = (item) => {
+        if (item === null) return null;
+        if (item === TicTacToe.X) return "X";
+        if (item === TicTacToe.O) return "O";
+    }
+
+    mapper = () => [...this.state.store]
         .reduce((prevResult, current, i) => {
             if (i % 3 === 0) {
                 prevResult.push([current])
@@ -44,9 +68,12 @@ class TicTacToe extends Component {
         }, []);
 
     render = () => <>
-        <table>
-            {this.mapper().map(row => <tr>
-                {row.map(column => <td>aaa</td>)}
+        <table className={style.board}>
+            {this.mapper().map((row, x) => <tr>
+                {row.map((column, y) => <td
+                    className={style.cell}
+                    data-index={(x * 3) + (y)}
+                    onClick={this.put}>{this.display(column)}</td>)}
             </tr>)}
         </table>
     </>
