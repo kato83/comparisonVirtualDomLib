@@ -8,10 +8,10 @@ module.exports = {
     },
     output: {
         filename: '[name].bundle.js',
-        path: __dirname + '/dist'
+        path: __dirname + '/docs'
     },
     devServer: {
-        static: './dist',
+        static: './docs',
     },
     module: {
         rules: [
