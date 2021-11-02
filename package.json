@@ -1,5 +1,5 @@
 {
-  "name": "comparisonVirtualDomLib",
+  "name": "comparison-virtual-dom-lib",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -30,6 +30,7 @@
     "webpack-dev-server": "^4.3.1"
   },
   "dependencies": {
+    "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   }

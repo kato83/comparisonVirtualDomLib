@@ -1,0 +1,7 @@
+.board .cell{
+    border: solid 1px #111;
+    width: 2rem;
+    height: 2rem;
+    text-align: center;
+    vertical-align: middle;
+}

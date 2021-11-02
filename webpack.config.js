@@ -1,8 +1,8 @@
 module.exports = {
-    mode: "production",
-    entry: [
-        './src/react-class-component.jsx',
-    ],
+    mode: "development",
+    entry: {
+        'react-class-component': './src/react-class-component.jsx',
+    },
     performance: {
         hints: false,
     },
@@ -22,7 +22,14 @@ module.exports = {
                         loader: "babel-loader",
                         options: {
                             presets: [
-                                "@babel/preset-env",
+                                [
+                                    "@babel/preset-env",
+                                    {
+                                        targets: {
+                                            node: 'current'
+                                        }
+                                    }
+                                ],
                                 "@babel/react"
                             ]
                         }
