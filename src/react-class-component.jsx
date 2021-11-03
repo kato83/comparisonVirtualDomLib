@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ReactDom from 'react-dom';
-import style from './style.css';
+import style from './style.scss';
 
 /**
  * 文字列をJSONに変換を試行し、失敗 or 戻り値が nullable なら elseObj を返却
@@ -23,7 +23,7 @@ class TicTacToe extends Component {
     // see https://ja.reactjs.org/docs/typechecking-with-proptypes.html
     // TS使ってればこんなの不要
     static propTypes = {
-        storageKey: PropTypes.string.isRequired
+        storageKey: PropTypes.string
     }
     // propsの初期値
     // see https://ja.reactjs.org/docs/typechecking-with-proptypes.html#default-prop-values
@@ -154,10 +154,10 @@ class TicTacToe extends Component {
         <p>メッセージ: {this.state.message}</p>
         <table className={style.board}>
             <tbody>
-            {this.mapper().map((row, x) => <tr key={x}>
-                {row.map((column, y) => <td
+            {this.mapper().map((row, y) => <tr key={y}>
+                {row.map((column, x) => <td
                     className={style.cell}
-                    data-index={(x * 3) + (y)}
+                    data-index={(y * 3) + (x)}
                     key={'' + x + y}
                     onClick={this.put}>{this.display(column)}</td>)}
             </tr>)}

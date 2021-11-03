@@ -1,7 +1,10 @@
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
+
 module.exports = {
     mode: "development",
     entry: {
         'react-class-component': './src/react-class-component.jsx',
+        'vue2-component': './src/vue2-component.vue',
     },
     performance: {
         hints: false,
@@ -13,8 +16,13 @@ module.exports = {
     devServer: {
         static: './docs',
     },
+    devtool: 'inline-source-map',
     module: {
         rules: [
+            {
+                test: /\.vue$/,
+                loader: "vue-loader",
+            },
             {
                 test: /\.js?x$/,
                 use: [
@@ -37,19 +45,53 @@ module.exports = {
                 ]
             },
             {
-                test: /\.css/,
-                use: [
-                    "style-loader",
+                test: /\.scss/,
+                oneOf: [
+                    // vue の style を解釈
                     {
-                        loader: "css-loader",
-                        options: {
-                            url: false,
-                            modules: true
-                        }
+                        resourceQuery: /vue/,
+                        use: [
+                            "vue-style-loader",
+                            "css-loader",
+                            {
+                                loader: "sass-loader",
+                                options: {
+                                    sourceMap: true
+                                }
+                            },
+                        ],
+                    },
+                    // react の style を解釈
+                    {
+                        use: [
+                            "style-loader",
+                            {
+                                loader: "css-loader",
+                                options: {
+                                    url: false,
+                                    modules: true
+                                }
+                            },
+                            {
+                                loader: "sass-loader",
+                                options: {
+                                    sourceMap: true
+                                }
+                            },
+                        ]
                     }
-                ]
-            }
+                ],
+            },
         ]
+    },
+    plugins: [
+        new VueLoaderPlugin()
+    ],
+    resolve: {
+        extensions: [".vue", ".js"],
+        alias: {
+            "vue$": "vue/dist/vue.esm.js"
+        }
     },
     target: ["web"],
 };
