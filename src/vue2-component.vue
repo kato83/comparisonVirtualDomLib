@@ -56,7 +56,7 @@ export default {
       );
       if (this.isWin('x')) this.$data.message = 'Xの勝利';
       if (this.isWin('o')) this.$data.message = 'Oの勝利';
-      if (this.isDraw()) this.setState({message: '引き分け'});
+      if (this.isDraw()) this.$data.message = '引き分け';
     }, 500);
   },
   computed: {
